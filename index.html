@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <title>Roll & Earn Mini App</title>
+</head>
+<body>
+    <h1>Добро пожаловать в Roll & Earn</h1>
+    <div id="balance">Ваш баланс: <span id="token-balance">100</span> токенов</div>
+    <button id="play-roulette">Играть в рулетку</button>
+    <button id="buy-tokens">Купить токены</button>
+
+    <script>
+        Telegram.WebApp.ready();
+
+        const tg = window.Telegram.WebApp;
+
+        document.getElementById('play-roulette').onclick = function() {
+            tg.MainButton.text = "Участвовать в рулетке!";
+            tg.MainButton.show();
+        };
+
+        document.getElementById('buy-tokens').onclick = function() {
+            tg.sendData(JSON.stringify({ action: 'buy_tokens', amount: 10 }));
+        };
+    </script>
+</body>
+</html>
