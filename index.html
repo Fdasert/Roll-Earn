@@ -21,41 +21,45 @@
             measurementId: "G-9PHTJYV2ZP"
 };
 
-                // Инициализация Firebase
-        const app = initializeApp(firebaseConfig);
+         // Инициализация Firebase
+         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-        const auth = getAuth();
 
-        // Анонимная аутентификация
-        signInAnonymously(auth)
-            .then(async () => {
-                console.log("Пользователь аутентифицирован анонимно.");
+        // Генерация уникального идентификатора для устройства
+        function generateUniqueId() {
+            return 'user_' + Math.random().toString(36).substr(2, 9);
+        }
 
-                const userId = auth.currentUser.uid;
-                const userRef = doc(db, 'users', userId);
+        // Получаем уникальный идентификатор из Local Storage или создаем новый
+        let userId = localStorage.getItem('userId');
+        if (!userId) {
+            userId = generateUniqueId();
+            localStorage.setItem('userId', userId);
+        }
 
-                try {
-                    const docSnap = await getDoc(userRef);
+        const userRef = doc(db, 'users', userId);
 
-                    if (docSnap.exists()) {
-                        // Пользователь найден
-                        const data = docSnap.data();
-                        document.getElementById('message').textContent = `У вас уже есть ${data.tokens} токенов.`;
-                        document.getElementById('tokens').textContent = `Ваши токены: ${data.tokens}`;
-                    } else {
-                        // Пользователь не найден, создаем запись
-                        const tokens = Math.floor(Math.random() * 10000) + 1;
-                        await setDoc(userRef, { tokens });
-                        document.getElementById('message').textContent = `Поздравляю! Вы получили ${tokens} токенов при первом запуске.`;
-                        document.getElementById('tokens').textContent = `Ваши токены: ${tokens}`;
-                    }
-                } catch (error) {
-                    console.error('Ошибка при работе с Firestore:', error);
+        // Обработка при загрузке
+        window.addEventListener('load', async () => {
+            try {
+                const docSnap = await getDoc(userRef);
+
+                if (docSnap.exists()) {
+                    // Пользователь найден
+                    const data = docSnap.data();
+                    document.getElementById('message').textContent = `У вас уже есть ${data.tokens} токенов.`;
+                    document.getElementById('tokens').textContent = `Ваши токены: ${data.tokens}`;
+                } else {
+                    // Пользователь не найден, создаем запись
+                    const tokens = Math.floor(Math.random() * 10000) + 1;
+                    await setDoc(userRef, { tokens });
+                    document.getElementById('message').textContent = `Поздравляю! Вы получили ${tokens} токенов при первом запуске.`;
+                    document.getElementById('tokens').textContent = `Ваши токены: ${tokens}`;
                 }
-            })
-            .catch((error) => {
-                console.error("Ошибка аутентификации:", error);
-            });
+            } catch (error) {
+                console.error('Ошибка при работе с Firestore:', error);
+            }
+        });
     </script>
 </head>
 <body>
