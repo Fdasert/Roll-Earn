@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@twa-dev/sdk": "^7.10.1"
+    "@twa-dev/sdk": "^7.10.1",
+    "firebase": "^10.13.1"
   }
 }
