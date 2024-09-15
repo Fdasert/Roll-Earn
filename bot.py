@@ -5,7 +5,7 @@ TOKEN = '7121720328:AAH0rtgpNAN97_jARsTeKtVeuniznL6PhHU'
 
 def start(update, context):
     keyboard = [[
-        InlineKeyboardButton("Открыть TokenSpin", web_app={"url": "https://fdasert.github.io/Roll-Earn/"})
+        InlineKeyboardButton("Открыть ROOL", web_app={"url": "https://fdasert.github.io/Roll-Earn/"})
     ]]
     reply_markup = InlineKeyboardMarkup(keyboard)
     update.message.reply_text('Добро пожаловать! Откройте мини-приложение для игры.', reply_markup=reply_markup)
